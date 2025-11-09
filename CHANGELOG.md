@@ -5,31 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2025-11-09
+
+### Added
+
+- Plugin description translation
+
 ## [1.0.3] - 2025-11-09
 
 ### Fixed
+
 - Fixed plugin not detecting Custom Post Types (CPTs) registered by other plugins
 - Changed post type detection from `public => true` to `show_ui => true` to include CPTs with admin UI regardless of public status
 - Added cache invalidation when post types are registered via `registered_post_type` hook
 - Settings page now dynamically fetches all available post types at render time
 
 ### Added
+
 - New `clear_cache()` method to invalidate cached options and configuration when post types are registered
 
 ## [1.0.2] - 2025-11-09
 
 ### Changed
+
 - Updated version number in plugin header
 
 ## [1.0.1] - 2025-11-09
 
 ### Changed
+
 - Updated author information in plugin header
 - Refined README and plugin description for clarity
 
 ## [1.0.0] - Initial Release
 
 ### Added
+
 - Initial release of WP Admin Submenus plugin
 - Intelligent submenus for WordPress admin menu
 - Quick access to posts, taxonomies, and users
