@@ -11,13 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improved post type filtering to exclude internal/system post types from settings page
 - Now filters out ACF internal post types: `acf-post-type`, `acf-taxonomy`, `acf-ui-options-page`
-- Added intelligent filtering: only includes post types that are public OR have `show_in_menu` enabled
-- This prevents internal plugin post types (that only have `show_ui=true`) from appearing in the settings
+- Added intelligent filtering: only includes post types that are public OR have top-level admin menus (`show_in_menu === true`)
+- This prevents plugin configuration post types from appearing while allowing internal admin-only content types
 
 ### Changed
 
-- Post type detection now checks both `public` and `show_in_menu` properties
+- Post type detection now checks `public` property and `show_in_menu === true` (strict boolean check)
 - Settings page now uses the same improved filtering logic for consistency
+- Removed version constant duplication - version now read directly from plugin header using `get_plugin_data()`
+
+### Removed
+
+- Removed `WP_ADMIN_SUBMENUS_VERSION` constant to avoid maintaining version in multiple places
 
 ## [1.0.4] - 2025-11-09
 

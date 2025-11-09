@@ -3,7 +3,7 @@
  * Plugin Name: WP Admin Submenus
  * Plugin URI: https://github.com/dbrabyn/wp-submenus
  * Description: Adds intelligent submenus to WordPress' main admin menu for quick access to posts, taxonomies, and users. Configure which post types and how many to include via Settings.
- * Version: 1.0.5
+ * Version: 1.0.6
  * Author: David Brabyn
  * Author URI: https://9wdigital.com
  * License: GPL v2 or later
@@ -149,7 +149,7 @@ class WP_Admin_Submenus {
         // Allow filtering of excluded post types
         $excluded = apply_filters('wp_admin_submenus_excluded_post_types', $excluded);
 
-        // Get post types that show in admin UI but filter out non-public ones unless explicitly needed
+        // Get post types that show in admin UI
         $post_types = get_post_types(['show_ui' => true], 'objects');
         $eligible_post_types = [];
 
@@ -159,9 +159,10 @@ class WP_Admin_Submenus {
                 continue;
             }
 
-            // Only include post types that are public OR have show_in_menu enabled
-            // This filters out internal post types that only have show_ui=true
-            if ($post_type_obj->public || $post_type_obj->show_in_menu) {
+            // Include post types that are public OR have a top-level admin menu
+            // This includes both public content and internal admin-only post types
+            // while filtering out plugin configuration post types
+            if ($post_type_obj->public || ($post_type_obj->show_in_menu === true)) {
                 $eligible_post_types[] = $post_type;
             }
         }
@@ -693,7 +694,7 @@ class WP_Admin_Submenus {
 
         $excluded = apply_filters('wp_admin_submenus_excluded_post_types', $excluded);
 
-        // Get post types that show in admin UI but filter out non-public ones unless explicitly needed
+        // Get post types that show in admin UI
         $post_types = get_post_types(['show_ui' => true], 'objects');
         $available_post_types = [];
 
@@ -703,9 +704,10 @@ class WP_Admin_Submenus {
                 continue;
             }
 
-            // Only include post types that are public OR have show_in_menu enabled
-            // This filters out internal post types that only have show_ui=true
-            if ($post_type_obj->public || $post_type_obj->show_in_menu) {
+            // Include post types that are public OR have a top-level admin menu
+            // This includes both public content and internal admin-only post types
+            // while filtering out plugin configuration post types
+            if ($post_type_obj->public || ($post_type_obj->show_in_menu === true)) {
                 $available_post_types[] = $post_type;
             }
         }

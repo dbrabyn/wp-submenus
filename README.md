@@ -44,8 +44,9 @@ Navigate to **Settings > Admin Submenus** to configure:
 
 ### Default Behavior
 
-- All user-facing post types are enabled by default (except core WordPress types like posts, attachments, revisions, etc.)
-- Post types must be either public OR have `show_in_menu` enabled to be included
+- All content post types are enabled by default (except core WordPress types like posts, attachments, revisions, etc.)
+- Post types must be either **public** (front-end content) OR have **a top-level admin menu** (`show_in_menu === true`) to be included
+- This allows both public content types and internal admin-only post types while filtering out plugin configuration screens
 - Shows up to 20 items per submenu
 - Automatically excludes internal/system post types:
   - Core WordPress internal types (blocks, templates, navigation, etc.)
