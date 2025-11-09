@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: WP Admin Submenus
- * Plugin URI: https://github.com/yourusername/wp-admin-submenus
+ * Plugin URI: https://github.com/dbrabyn/wp-submenus
  * Description: Adds intelligent submenus to WordPress admin for quick access to posts, taxonomies, and users. Configure which post types to include via Settings.
  * Version: 1.0.0
  * Author: Your Name
@@ -23,6 +23,19 @@ define('WP_ADMIN_SUBMENUS_VERSION', '1.0.0');
 define('WP_ADMIN_SUBMENUS_PLUGIN_FILE', __FILE__);
 define('WP_ADMIN_SUBMENUS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_ADMIN_SUBMENUS_DEFAULT_LIMIT', 20);
+
+// Initialize Plugin Update Checker
+require WP_ADMIN_SUBMENUS_PLUGIN_DIR . 'plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$wpAdminSubmenusUpdateChecker = PucFactory::buildUpdateChecker(
+    'https://github.com/dbrabyn/wp-submenus/',
+    WP_ADMIN_SUBMENUS_PLUGIN_FILE,
+    'wp-admin-submenus'
+);
+
+// Optionally set the branch for updates (defaults to 'main' or 'master')
+// $wpAdminSubmenusUpdateChecker->setBranch('main');
 
 /**
  * Main Plugin Class

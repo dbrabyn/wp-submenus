@@ -10,12 +10,28 @@ A performant, robust, and secure WordPress plugin that adds intelligent submenus
 - **Polylang Compatible**: Automatically filters content by default language when Polylang is active
 - **Secure**: Built with WordPress security best practices (nonces, sanitization, capability checks)
 - **Responsive Design**: Scrollable submenus with clean, accessible styling
+- **Automatic Updates**: Integrates with GitHub releases for seamless plugin updates
 
 ## Installation
 
 1. Upload the plugin files to `/wp-content/plugins/wp-admin-submenus/`
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to Settings > Admin Submenus to configure which post types should have submenus
+
+## Automatic Updates
+
+This plugin uses the [Plugin Update Checker](https://github.com/YahnisElsts/plugin-update-checker) library to enable automatic updates from GitHub releases.
+
+**How it works:**
+- The plugin automatically checks for new releases on GitHub
+- When a new version is released, WordPress will notify you in the Plugins page
+- You can update directly from your WordPress admin, just like WordPress.org plugins
+- No manual downloading or uploading required
+
+**For developers:**
+- Create a new release on GitHub with a version tag (e.g., `v1.0.1`)
+- The plugin will automatically detect the new version
+- Users will be notified and can update with one click
 
 ## Configuration
 
