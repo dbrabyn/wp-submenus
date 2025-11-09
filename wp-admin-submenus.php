@@ -439,15 +439,16 @@ class WP_Admin_Submenus {
                 continue;
             }
 
-            $role_obj = get_role($role);
-            $role_name = $role_obj ? translate_user_role($role_obj->name) : $role;
+            // Get translated role name
+            $role_names = wp_roles()->role_names;
+            $role_name = isset($role_names[$role]) ? translate_user_role($role_names[$role]) : $role;
 
             add_submenu_page(
                 $parent_slug,
                 "{$role_name} ({$users_data['total']})",
                 '<span class="role-name">' . esc_html($role_name) . '</span><span class="dotted-line" aria-hidden="true"></span><span class="user-count">(' . absint($users_data['total']) . ')</span>',
                 $capability,
-                '#'
+                $this->generate_submenu_url('user_role', null, ['role' => $role])
             );
 
             foreach ($users_data['items'] as $user) {
