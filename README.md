@@ -105,7 +105,10 @@ The plugin is fully translation-ready and includes:
 
 - **Text Domain**: `wp-admin-submenus`
 - **Translation Template**: `languages/wp-admin-submenus.pot` - Use this as a base for new translations
-- **Included Translations**: French (`fr_FR`)
+- **Included Translations**:
+  - French (`fr_FR`)
+  - Spanish (`es_ES`)
+  - German (`de_DE`)
 
 ### For Translators
 
