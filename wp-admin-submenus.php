@@ -78,6 +78,9 @@ class WP_Admin_Submenus {
      * Initialize WordPress hooks
      */
     private function init_hooks() {
+        // Load text domain for translations
+        add_action('init', [$this, 'load_textdomain']);
+
         // Admin menu hooks
         add_action('admin_menu', [$this, 'register_all_submenus'], 999);
         add_action('admin_head', [$this, 'admin_submenu_assets']);
@@ -88,6 +91,17 @@ class WP_Admin_Submenus {
 
         // Plugin action links
         add_filter('plugin_action_links_' . plugin_basename(WP_ADMIN_SUBMENUS_PLUGIN_FILE), [$this, 'add_action_links']);
+    }
+
+    /**
+     * Load plugin text domain for translations
+     */
+    public function load_textdomain() {
+        load_plugin_textdomain(
+            'wp-admin-submenus',
+            false,
+            dirname(plugin_basename(WP_ADMIN_SUBMENUS_PLUGIN_FILE)) . '/languages'
+        );
     }
 
     /**
@@ -439,15 +453,16 @@ class WP_Admin_Submenus {
                 continue;
             }
 
-            $role_obj = get_role($role);
-            $role_name = $role_obj ? translate_user_role($role_obj->name) : $role;
+            // Get translated role name
+            $role_names = wp_roles()->role_names;
+            $role_name = isset($role_names[$role]) ? translate_user_role($role_names[$role]) : $role;
 
             add_submenu_page(
                 $parent_slug,
                 "{$role_name} ({$users_data['total']})",
                 '<span class="role-name">' . esc_html($role_name) . '</span><span class="dotted-line" aria-hidden="true"></span><span class="user-count">(' . absint($users_data['total']) . ')</span>',
                 $capability,
-                '#'
+                $this->generate_submenu_url('user_role', null, ['role' => $role])
             );
 
             foreach ($users_data['items'] as $user) {
@@ -483,6 +498,20 @@ class WP_Admin_Submenus {
         }
         ?>
         <style>
+            /* Screen reader text for accessibility */
+            .screen-reader-text {
+                border: 0;
+                clip: rect(1px, 1px, 1px, 1px);
+                clip-path: inset(50%);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+                word-wrap: normal !important;
+            }
+
             /* Make long submenus scrollable */
             #adminmenu .wp-submenu {
                 min-width: 160px !important;
@@ -631,7 +660,8 @@ class WP_Admin_Submenus {
             return;
         }
 
-        echo '<fieldset>';
+        echo '<fieldset aria-describedby="post-types-description">';
+        echo '<legend class="screen-reader-text">' . esc_html__('Enable Submenus For', 'wp-admin-submenus') . '</legend>';
         foreach ($available_post_types as $post_type) {
             $post_type_obj = get_post_type_object($post_type);
             if (!$post_type_obj) {
@@ -648,14 +678,15 @@ class WP_Admin_Submenus {
                     id="<?php echo $id; ?>"
                     value="<?php echo esc_attr($post_type); ?>"
                     <?php checked($checked); ?>
+                    aria-label="<?php echo esc_attr(sprintf(__('Enable submenus for %s', 'wp-admin-submenus'), $post_type_obj->labels->name)); ?>"
                 />
                 <?php echo esc_html($post_type_obj->labels->name); ?>
-                <span style="color: #666; font-size: 12px;">(<?php echo esc_html($post_type); ?>)</span>
+                <span style="color: #666; font-size: 12px;" aria-hidden="true">(<?php echo esc_html($post_type); ?>)</span>
             </label>
             <?php
         }
         echo '</fieldset>';
-        echo '<p class="description">' . esc_html__('Select which post types should have quick-access submenus in the admin sidebar.', 'wp-admin-submenus') . '</p>';
+        echo '<p class="description" id="post-types-description">' . esc_html__('Select which post types should have quick-access submenus in the admin sidebar.', 'wp-admin-submenus') . '</p>';
     }
 
     /**
@@ -665,6 +696,9 @@ class WP_Admin_Submenus {
         $options = $this->get_options();
         $item_limit = $options['item_limit'];
         ?>
+        <label for="item_limit" class="screen-reader-text">
+            <?php esc_html_e('Items Per Menu', 'wp-admin-submenus'); ?>
+        </label>
         <input
             type="number"
             name="wp_admin_submenus_options[item_limit]"
@@ -674,8 +708,10 @@ class WP_Admin_Submenus {
             max="100"
             step="1"
             class="small-text"
+            aria-describedby="item-limit-description"
+            aria-label="<?php esc_attr_e('Number of items to display per submenu', 'wp-admin-submenus'); ?>"
         />
-        <p class="description">
+        <p class="description" id="item-limit-description">
             <?php esc_html_e('Maximum number of items to show in each submenu before "See more" link appears.', 'wp-admin-submenus'); ?>
         </p>
         <?php

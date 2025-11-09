@@ -99,6 +99,40 @@ add_filter('wp_admin_submenus_desc_sorted_post_types', function($post_types) {
 - **Static Caching**: Configuration cached per request to prevent redundant calculations
 - **No Persistent Cache**: Avoids Object Cache Pro compatibility issues
 
+## Translation (i18n)
+
+The plugin is fully translation-ready and includes:
+
+- **Text Domain**: `wp-admin-submenus`
+- **Translation Template**: `languages/wp-admin-submenus.pot` - Use this as a base for new translations
+- **Included Translations**:
+  - French (`fr_FR`)
+  - Spanish (`es_ES`)
+  - German (`de_DE`)
+
+### For Translators
+
+1. Copy `languages/wp-admin-submenus.pot` to `languages/wp-admin-submenus-{locale}.po`
+2. Translate the strings using a tool like Poedit or your preferred translation editor
+3. Compile the `.po` file to `.mo` using `msgfmt` or the included script:
+   ```bash
+   cd languages
+   bash compile-translations.sh
+   ```
+
+### Do I need an English translation?
+
+**No.** The plugin's default language is English, so you don't need an `en_US.po` file. The English strings are already in the code. Only create translation files for other languages.
+
+## Accessibility
+
+The plugin follows WCAG 2.1 Level AA accessibility guidelines:
+
+- **ARIA Labels**: All form controls have proper ARIA labels for screen readers
+- **Keyboard Navigation**: Full keyboard accessibility throughout
+- **Semantic HTML**: Proper use of fieldsets, legends, and form labels
+- **Screen Reader Support**: Hidden labels and descriptions for assistive technologies
+
 ## Requirements
 
 - WordPress 5.0 or higher
