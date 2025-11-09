@@ -3,7 +3,7 @@
  * Plugin Name: WP Admin Submenus
  * Plugin URI: https://github.com/dbrabyn/wp-submenus
  * Description: Adds intelligent submenus to WordPress' main admin menu for quick access to posts, taxonomies, and users. Configure which post types and how many to include via Settings.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: David Brabyn
  * Author URI: https://9wdigital.com
  * License: GPL v2 or later
@@ -135,7 +135,7 @@ class WP_Admin_Submenus {
     }
 
     /**
-     * Get all eligible post types (all public post types enabled by default)
+     * Get all eligible post types (all post types with admin UI enabled by default)
      */
     private function get_default_post_types() {
         $excluded = [
@@ -150,7 +150,8 @@ class WP_Admin_Submenus {
         // Allow filtering of excluded post types
         $excluded = apply_filters('wp_admin_submenus_excluded_post_types', $excluded);
 
-        $post_types = get_post_types(['public' => true], 'names');
+        // Get post types that show in admin UI (includes both public and non-public CPTs with show_ui=true)
+        $post_types = get_post_types(['show_ui' => true], 'names');
         return array_values(array_diff($post_types, $excluded));
     }
 
@@ -676,7 +677,8 @@ class WP_Admin_Submenus {
         ];
 
         $excluded = apply_filters('wp_admin_submenus_excluded_post_types', $excluded);
-        $post_types = get_post_types(['public' => true], 'names');
+        // Get post types that show in admin UI (includes both public and non-public CPTs with show_ui=true)
+        $post_types = get_post_types(['show_ui' => true], 'names');
         $available_post_types = array_values(array_diff($post_types, $excluded));
 
         if (empty($available_post_types)) {
