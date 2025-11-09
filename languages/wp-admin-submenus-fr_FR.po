@@ -1,0 +1,89 @@
+# French (France) translation for WP Admin Submenus
+# Copyright (C) 2024 WP Admin Submenus
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Admin Submenus 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/dbrabyn/wp-submenus/issues\n"
+"POT-Creation-Date: 2024-11-09 14:00:00+00:00\n"
+"PO-Revision-Date: 2024-11-09 14:30:00+00:00\n"
+"Last-Translator: \n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Manual\n"
+
+#: wp-admin-submenus.php:364
+msgid "See more →"
+msgstr "Voir plus →"
+
+#: wp-admin-submenus.php:468
+#, php-format
+msgid "See more %s"
+msgstr "Voir plus de %s"
+
+#: wp-admin-submenus.php:562
+msgid "WP Admin Submenus Settings"
+msgstr "Paramètres des sous-menus admin"
+
+#: wp-admin-submenus.php:563
+msgid "Admin Submenus"
+msgstr "Sous-menus admin"
+
+#: wp-admin-submenus.php:582
+msgid "Post Type Submenus"
+msgstr "Sous-menus des types de contenu"
+
+#: wp-admin-submenus.php:589
+msgid "Configure which post types should display submenus in the WordPress admin."
+msgstr "Configurez quels types de contenu doivent afficher des sous-menus dans l'administration WordPress."
+
+#: wp-admin-submenus.php:598
+msgid "Enable Submenus For"
+msgstr "Activer les sous-menus pour"
+
+#: wp-admin-submenus.php:605
+msgid "Items Per Menu"
+msgstr "Éléments par menu"
+
+#: wp-admin-submenus.php:628
+msgid "No eligible post types found."
+msgstr "Aucun type de contenu éligible trouvé."
+
+#: wp-admin-submenus.php:647
+msgid "Select which post types should have quick-access submenus in the admin sidebar."
+msgstr "Sélectionnez les types de contenu qui doivent avoir des sous-menus d'accès rapide dans la barre latérale d'administration."
+
+#: wp-admin-submenus.php:662
+msgid "Maximum number of items to show in each submenu before \"See more\" link appears."
+msgstr "Nombre maximum d'éléments à afficher dans chaque sous-menu avant l'apparition du lien « Voir plus »."
+
+#: wp-admin-submenus.php:680
+msgid "Save Settings"
+msgstr "Enregistrer les paramètres"
+
+#: wp-admin-submenus.php:667
+#, php-format
+msgid "Enable submenus for %s"
+msgstr "Activer les sous-menus pour %s"
+
+#: wp-admin-submenus.php:686
+#: wp-admin-submenus.php:650
+msgid "Enable Submenus For"
+msgstr "Activer les sous-menus pour"
+
+#: wp-admin-submenus.php:686
+#: wp-admin-submenus.php:698
+msgid "Items Per Menu"
+msgstr "Éléments par menu"
+
+#: wp-admin-submenus.php:698
+msgid "Number of items to display per submenu"
+msgstr "Nombre d'éléments à afficher par sous-menu"
+
+#: wp-admin-submenus.php:692
+msgid "Settings"
+msgstr "Paramètres"
