@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2025-11-11
+
+### Added
+
+- Support for WordPress default "Posts" post type
+- Posts now appear in settings page and can have submenus enabled
+
+### Fixed
+
+- Fixed parent slug for regular posts menu (now correctly uses `edit.php` instead of `edit.php?post_type=post`)
+- Fixed "See more" URL for regular posts to use proper WordPress admin URL structure
+- Removed `'post'` from excluded post types list
+
 ## [1.0.5] - 2025-11-09
 
 ### Fixed
