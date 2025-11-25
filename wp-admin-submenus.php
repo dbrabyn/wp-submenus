@@ -3,7 +3,7 @@
  * Plugin Name: WP Admin Submenus
  * Plugin URI: https://github.com/dbrabyn/wp-submenus
  * Description: Adds intelligent submenus to WordPress' main admin menu for quick access to posts, taxonomies, and users. Configure which post types and how many to include via Settings.
- * Version: 1.0.13
+ * Version: 1.0.14
  * Author: David Brabyn
  * Author URI: https://9wdigital.com
  * License: GPL v2 or later
@@ -22,8 +22,6 @@ if (!defined('ABSPATH')) {
 define('WP_ADMIN_SUBMENUS_PLUGIN_FILE', __FILE__);
 define('WP_ADMIN_SUBMENUS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WP_ADMIN_SUBMENUS_DEFAULT_LIMIT', 20);// number of items per menu
-define('WP_ADMIN_SUBMENUS_TRUNCATE_1_LINE', 18);
-define('WP_ADMIN_SUBMENUS_TRUNCATE_2_LINES', 35);
 
 // Initialize Plugin Update Checker
 require WP_ADMIN_SUBMENUS_PLUGIN_DIR . 'plugin-update-checker/plugin-update-checker.php';
@@ -412,23 +410,15 @@ class WP_Admin_Submenus {
 
         $options = $this->get_options();
         $truncation = $options['title_truncation'];
-
-        // Approximate character limits based on line setting
-        $char_limits = [
-            '1' => WP_ADMIN_SUBMENUS_TRUNCATE_1_LINE,
-            '2' => WP_ADMIN_SUBMENUS_TRUNCATE_2_LINES,
-            'none' => 0
-        ];
-        $max_chars = $char_limits[$truncation] ?? 0;
+        $truncate_class = ($truncation !== 'none') ? " truncate-{$truncation}" : '';
 
         foreach ($posts_data['items'] as $post) {
             $title = $post->post_title;
-            $display_title = ($max_chars > 0) ? $this->truncate_title($title, $max_chars) : $title;
 
             add_submenu_page(
                 $parent_slug,
                 esc_html($title),
-                '<span aria-hidden="true">&nbsp;&nbsp;-&nbsp;</span>' . esc_html($display_title),
+                '<span aria-hidden="true">&nbsp;&nbsp;-&nbsp;</span><span class="submenu-title' . esc_attr($truncate_class) . '">' . esc_html($title) . '</span>',
                 $capability,
                 $this->generate_submenu_url('post', $post)
             );
@@ -464,23 +454,15 @@ class WP_Admin_Submenus {
 
         $options = $this->get_options();
         $truncation = $options['title_truncation'];
-
-        // Approximate character limits based on line setting
-        $char_limits = [
-            '1' => WP_ADMIN_SUBMENUS_TRUNCATE_1_LINE,
-            '2' => WP_ADMIN_SUBMENUS_TRUNCATE_2_LINES,
-            'none' => 0
-        ];
-        $max_chars = $char_limits[$truncation] ?? 0;
+        $truncate_class = ($truncation !== 'none') ? " truncate-{$truncation}" : '';
 
         foreach ($terms_data['items'] as $term) {
             $name = $term->name;
-            $display_name = ($max_chars > 0) ? $this->truncate_title($name, $max_chars) : $name;
 
             add_submenu_page(
                 $parent_slug,
                 esc_html($name),
-                '<span aria-hidden="true">&nbsp;&nbsp;-&nbsp;</span>' . esc_html($display_name),
+                '<span aria-hidden="true">&nbsp;&nbsp;-&nbsp;</span><span class="submenu-title' . esc_attr($truncate_class) . '">' . esc_html($name) . '</span>',
                 $capability,
                 $this->generate_submenu_url('term', $term, ['taxonomy' => $taxonomy, 'post_type' => $post_type])
             );
@@ -511,14 +493,7 @@ class WP_Admin_Submenus {
 
         $options = $this->get_options();
         $truncation = $options['title_truncation'];
-
-        // Approximate character limits based on line setting
-        $char_limits = [
-            '1' => WP_ADMIN_SUBMENUS_TRUNCATE_1_LINE,
-            '2' => WP_ADMIN_SUBMENUS_TRUNCATE_2_LINES,
-            'none' => 0
-        ];
-        $max_chars = $char_limits[$truncation] ?? 0;
+        $truncate_class = ($truncation !== 'none') ? " truncate-{$truncation}" : '';
 
         foreach ($config['user_roles'] as $role) {
             $users_data = $this->get_submenu_users_by_role($role, $limit);
@@ -540,12 +515,11 @@ class WP_Admin_Submenus {
 
             foreach ($users_data['items'] as $user) {
                 $display_name = $user->display_name ?: $user->user_login;
-                $truncated_name = ($max_chars > 0) ? $this->truncate_title($display_name, $max_chars) : $display_name;
 
                 add_submenu_page(
                     $parent_slug,
                     esc_html($display_name),
-                    '<span aria-hidden="true">&nbsp;&nbsp;-&nbsp;</span>' . esc_html($truncated_name),
+                    '<span aria-hidden="true">&nbsp;&nbsp;-&nbsp;</span><span class="submenu-title' . esc_attr($truncate_class) . '">' . esc_html($display_name) . '</span>',
                     $capability,
                     $this->generate_submenu_url('user', $user)
                 );
@@ -562,16 +536,6 @@ class WP_Admin_Submenus {
                 );
             }
         }
-    }
-
-    /**
-     * Truncate title based on settings
-     */
-    private function truncate_title($title, $max_chars) {
-        if (mb_strlen($title) <= $max_chars) {
-            return $title;
-        }
-        return mb_substr($title, 0, $max_chars) . '…';
     }
 
     /**
@@ -600,6 +564,7 @@ class WP_Admin_Submenus {
             /* Make long submenus scrollable */
             #adminmenu .wp-submenu {
                 min-width: 160px !important;
+                max-width: 225px !important;
                 max-height: 60vh;
                 overflow-y: auto;
             }
@@ -607,10 +572,39 @@ class WP_Admin_Submenus {
                 white-space: normal !important;
                 word-wrap: break-word !important;
             }
-            /* Indent individual item links */
-            #adminmenu .wp-submenu li a[href*="post.php?post="],
-            #adminmenu .wp-submenu li a[href*="term.php?taxonomy="],
-            #adminmenu .wp-submenu li a[href*="user-edit.php?user_id="] {
+            /* Ensure parent link allows truncation */
+            #adminmenu .wp-submenu li a:has(.submenu-title.truncate-1),
+            #adminmenu .wp-submenu li a:has(.submenu-title.truncate-2) {
+                display: flex !important;
+                align-items: flex-start !important;
+                text-indent: 0 !important;
+            }
+            /* Indent span - fixed width */
+            #adminmenu .wp-submenu li a:has(.submenu-title) > span[aria-hidden="true"] {
+                flex-shrink: 0;
+            }
+            /* Title truncation - 1 line */
+            #adminmenu .wp-submenu .submenu-title.truncate-1 {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap !important;
+            }
+            /* Title truncation - 2 lines */
+            #adminmenu .wp-submenu .submenu-title.truncate-2 {
+                flex: 1;
+                min-width: 0;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                word-break: break-word;
+            }
+            /* Indent individual item links that don't have truncation */
+            #adminmenu .wp-submenu li a[href*="post.php?post="]:not(:has(.submenu-title)),
+            #adminmenu .wp-submenu li a[href*="term.php?taxonomy="]:not(:has(.submenu-title)),
+            #adminmenu .wp-submenu li a[href*="user-edit.php?user_id="]:not(:has(.submenu-title)) {
                 text-indent: -18px !important;
                 padding-left: 26px !important;
                 padding-right: 20px !important;
@@ -886,9 +880,6 @@ class WP_Admin_Submenus {
                 <?php esc_html_e('Truncate to 2 lines', 'wp-admin-submenus'); ?>
             </label>
         </fieldset>
-        <p class="description" id="title-truncation-description">
-            <?php esc_html_e('Control how long submenu titles are displayed. Truncated titles will show ellipsis (...) when cut off.', 'wp-admin-submenus'); ?>
-        </p>
         <?php
     }
 

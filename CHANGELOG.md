@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.14] - 2025-11-24
+
+### Changed
+
+- Replaced character-based truncation with CSS-based line truncation for better responsiveness
+- Title truncation now uses `text-overflow: ellipsis` for 1 line and `-webkit-line-clamp` for 2 lines
+- Submenu width now uses `min-width: 160px` and `max-width: 225px` for flexible sizing
+- Truncation adapts automatically to screen size and font settings
+
+### Removed
+
+- Removed PHP `truncate_title()` method - truncation now handled entirely by CSS
+- Removed character limit constants (`WP_ADMIN_SUBMENUS_TRUNCATE_1_LINE` and `WP_ADMIN_SUBMENUS_TRUNCATE_2_LINES`)
+
+### Technical
+
+- Menu items now use flexbox layout with `.submenu-title` spans for proper truncation
+- Added `flex: 1` and `min-width: 0` to truncated titles for correct overflow behavior
+- Indent spans use `flex-shrink: 0` to maintain consistent spacing
+
 ## [1.0.13] - 2025-11-22
 
 ### Tweaked
